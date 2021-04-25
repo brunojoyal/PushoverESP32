@@ -114,78 +114,33 @@ const char *PUSHOVER_ROOT_CA = "-----BEGIN CERTIFICATE-----\n"
 	// "CAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=\n"
 	// "-----END CERTIFICATE-----\n";
 
-Pushover::Pushover(String token, String user)
+Pushover::Pushover(char* token, char* user)
 {
 	_token = token;
 	_user = user;
 }
-void Pushover::setMessage(String message)
-{
-	_message = message;
-}
-void Pushover::setToken(String token)
-{
-	_token = token;
-}
-void Pushover::setUser(String user)
-{
-	_user = user;
-}
-void Pushover::setDevice(String device)
-{
-	_device = device;
-}
-void Pushover::setTitle(String title)
-{
-	_title = title;
-}
-void Pushover::setUrl(String url)
-{
-	_url = url;
-}
-void Pushover::setUrlTitle(String url_title)
-{
-	_url_title = url_title;
-}
-void Pushover::setPriority(int8_t priority)
-{
-	_priority = priority;
-}
-void Pushover::setTimestamp(uint32_t timestamp)
-{
-	_timestamp = timestamp;
-}
-void Pushover::setSound(String sound)
-{
-	_sound = sound;
-}
-void Pushover::setTimeout(uint16_t timeout)
-{
-	_timeout = timeout;
-}
-void Pushover::setHTML(boolean html)
-{
-	_html = html;
-}
-int Pushover::send(void)
+
+
+int Pushover::send(PushoverMessage newMessage)
 {
 	
 	HTTPClient myClient;
 	
 	myClient.begin("https://api.pushover.net/1/messages.json", PUSHOVER_ROOT_CA);
-	myClient.addHeader("Content-Type", "application/json"); 
-	StaticJsonDocument<512> doc;
-	doc["token"]=_token;
-	doc["user"]=_user;
-	doc["message"]=_message;
-	doc["title"]=_title;
-	doc["url"]=_url;
-	doc["url_title"]=_url_title;
-	doc["html"]=_html;
-	doc["priority"]=_priority;
-	doc["sound"]=_sound;
+	myClient.addHeader("Content-Type", "application/json");
 
-	doc["timestamp"]=_timestamp;
+	StaticJsonDocument<512> doc;
+	doc["token"]=newMessage._token;
+	doc["user"]=newMessage._user;
+	doc["message"]=newMessage._message;
+	doc["title"]=newMessage._title;
+	doc["url"]=newMessage._url;
+	doc["url_title"]=newMessage._url_title;
+	doc["html"]=newMessage._html;
+	doc["priority"]=newMessage._priority;
+	doc["sound"]=newMessage._sound;
+	doc["timestamp"]=newMessage._timestamp;
+
 	char output[512];
 	serializeJson(doc, output);
 	int code=myClient.POST(output);

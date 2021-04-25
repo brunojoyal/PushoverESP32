@@ -2,38 +2,26 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
+struct PushoverMessage {
+	char * _token;
+	char * _user=;
+	char * _message=;
+	char * _title=;
+	char * _url=;
+	char * _url_title=;
+	bool _html=;
+	uint8_t _priority=;
+	bool _sound=;
+	uint32_t _timestamp;
+};
 
 class Pushover
 {
 private:
-	String _token="";
-	String _user="";
-	String _message="";
-	String _device="";
-	String _title="";
-	String _url="";
-	String _url_title="";
-	int8_t _priority = -1;
-	uint32_t _timestamp = 0;
-	boolean _html;
 	uint16_t _timeout = 5000;
-	String _sound;
+	
 
 public:
-	Pushover(String, String);
-	void setToken(String);
-	void setUser(String);
-	void setMessage(String);
-	void setDevice(String);
-	void setTitle(String);
-	void setUrl(String);
-	void setUrlTitle(String);
-	void setPriority(int8_t);
-	void setRetry(uint16_t);
-	void setExpire(uint16_t);
-	void setTimestamp(uint32_t);
-	void setSound(String);
-	void setHTML(boolean);
-	void setTimeout(uint16_t);
-	int send(void);
+	Pushover(char *, char *);
+	int send(PushoverMessage message);
 };
