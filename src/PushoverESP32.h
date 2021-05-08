@@ -9,27 +9,27 @@ struct PushoverMessage
 {
 public:
 	const char *message = "";
-	const char *title ="";
-	const char *url ="";
-	const char *url_title ="";
+	const char *title = "";
+	const char *url = "";
+	const char *url_title = "";
+	const char sound = "";
 	bool html = false;
-	uint8_t priority =1;
-	bool sound = true;
+	uint8_t priority = 0;
 	uint32_t timestamp;
-	File * attachment = NULL;
+	File *attachment = NULL;
 };
 
 class Pushover
 {
 private:
 	uint16_t _timeout = 5000;
-	const char * _token;
-	const char * _user;
-	FS * _tempfileFS = &SPIFFS;
+	const char *_token;
+	const char *_user;
+	FS *_tempfileFS = &SPIFFS;
 
 public:
-	Pushover(const char *,const char *);
-	Pushover(const char *,const char *, FS *);
+	Pushover(const char *, const char *);
+	Pushover(const char *, const char *, FS *);
 	Pushover();
 	int send(PushoverMessage message);
 };

@@ -17,16 +17,16 @@ Messages are encoded within the PushoverMessage struct:
 ```cpp
     struct PushoverMessage
     {
-        public:
-            const char *message = "";
-            const char *title ="";
-            const char *url ="";
-            const char *url_title ="";
-            bool html = false;
-            uint8_t priority =1;
-            bool sound = true;
-            uint32_t timestamp;
-            File * attachment = NULL;
+    public:
+        const char *message = "";
+        const char *title = "";
+        const char *url = "";
+        const char *url_title = "";
+        const char sound = "";
+        bool html = false;
+        uint8_t priority = 0;
+        uint32_t timestamp;
+        File *attachment = NULL;
     };
 ```
 
@@ -61,4 +61,8 @@ To send an image, simply use the PushoverMessage.attachment property:
 
 
 
-**Remark**: Due to the absence of native multipart/form-data support in the arduino-esp32 framework, our current implementation relies on the creation of a tempfile (by default in SPIFFS) which contains the HTTP POST multipart request body. Please do let me know if you have a better way.
+**Remark**: Due to the absence of native multipart/form-data support in the arduino-esp32 framework, our current implementation relies on the creation of a tempfile (by default in SPIFFS) which contains the HTTP POST multipart request body. Please do let me know if you have a better way. In the meanwhile, please make sure there is enough available space for this tempfile, which is a hair larger than the attachment itself. If instead of SPIFFS you would prefer the tempfile to be stored elsewhere (say SD), simply pass a pointer to SD during initialization of the pushover class:
+
+```cpp
+        Pushover pushoverClient(token, user, &SD);
+```
