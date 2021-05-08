@@ -12,7 +12,7 @@ public:
 	const char *title = "";
 	const char *url = "";
 	const char *url_title = "";
-	const char sound = "";
+	const char *sound = "";
 	bool html = false;
 	uint8_t priority = 0;
 	uint32_t timestamp;
