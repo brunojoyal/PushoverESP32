@@ -30,7 +30,7 @@ Messages are encoded within the PushoverMessage struct:
     };
 ```
 
-To write a message, simply declare a PushoverMessage object and modify the properties you need. The other fields are given default values:
+To write a message, simply declare a PushoverMessage object and modify the properties you need. 
 
 ```cpp
 
