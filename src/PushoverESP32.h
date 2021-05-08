@@ -21,8 +21,8 @@ class Pushover
 {
 private:
 	uint16_t _timeout = 5000;
-	char * token;
-	char * user;
+	char * _token;
+	char * _user;
 
 public:
 	Pushover(char *, char *);

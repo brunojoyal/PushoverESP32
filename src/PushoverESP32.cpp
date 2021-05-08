@@ -24,10 +24,10 @@ const char *PUSHOVER_ROOT_CA = "-----BEGIN CERTIFICATE-----\n"
 							   "-----END CERTIFICATE-----\n";
 
 
-Pushover::Pushover(char* newtoken, char* newuser)
+Pushover::Pushover(char* token, char* user)
 {
-	token = newtoken;
-	user = newuser;
+	_token = token;
+	_user = user;
 }
 
 
@@ -40,8 +40,8 @@ int Pushover::send(PushoverMessage newMessage)
 	myClient.addHeader("Content-Type", "application/json");
 
 	StaticJsonDocument<512> doc;
-	doc["token"]=newMessage.token;
-	doc["user"]=newMessage.user;
+	doc["token"]=_token;
+	doc["user"]=_user;
 	doc["message"]=newMessage.message;
 	doc["title"]=newMessage.title;
 	doc["url"]=newMessage.url;
