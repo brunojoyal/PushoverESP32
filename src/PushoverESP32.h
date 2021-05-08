@@ -31,5 +31,8 @@ public:
 	Pushover(const char *, const char *);
 	Pushover(const char *, const char *, FS *);
 	Pushover();
+	Pushover(FS * altFS);
+	void setUser(const char*);
+	void setToken(const char*);
 	int send(PushoverMessage message);
 };
