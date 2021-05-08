@@ -25,10 +25,11 @@ private:
 	uint16_t _timeout = 5000;
 	const char * _token;
 	const char * _user;
-	FS * fileSystem = &SPIFFS;
+	FS * _tempfileFS = &SPIFFS;
 
 public:
 	Pushover(const char *,const char *);
+	Pushover(const char *,const char *, FS *);
 	Pushover();
 	int send(PushoverMessage message);
 };
