@@ -1,4 +1,4 @@
-#include <PushoverESP32.h>
+#include "PushoverESP32.h"
 
 const char *PUSHOVER_ROOT_CA = "-----BEGIN CERTIFICATE-----\n"
 							   "MIIDrzCCApegAwIBAgIQCDvgVpBCRrGhdWrJWZHHSjANBgkqhkiG9w0BAQUFADBh\n"
