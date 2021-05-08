@@ -23,7 +23,7 @@ const char *PUSHOVER_ROOT_CA = "-----BEGIN CERTIFICATE-----\n"
 							   "CAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=\n"
 							   "-----END CERTIFICATE-----\n";
 
-Pushover::Pushover(char *token, char *user) : _token(token), _user(user)
+Pushover::Pushover(const char *token, const char *user) : _token(token), _user(user)
 {
 	;
 }
@@ -39,7 +39,7 @@ int Pushover::send(PushoverMessage newMessage)
 	HTTPClient myClient;
 	int responseCode;
 	myClient.begin("https://api.pushover.net/1/messages.json", PUSHOVER_ROOT_CA);
-
+	
 	if (!newMessage.attachment)
 	{ //No attachment, so just a regular HTTPS POST request.
 		myClient.addHeader("Content-Type", "application/json");
@@ -61,38 +61,48 @@ int Pushover::send(PushoverMessage newMessage)
 	}
 	else //attachment, so we enter multipart/form-data hell...
 	{
-		File * tempFile;
-		if(fileSystem->exists("tempfile.temp")){
-			fileSystem->remove("tempfile.temp");
+		File tempFile;
+		if (fileSystem->exists("/tempfile.temp"))
+		{
+			fileSystem->remove("/tempfile.temp");
 		}
-		*tempFile = fileSystem->open("tempfile.temp");
-
-		tempFile->print("\n");
-		tempFile->print("----abcdefg\n");
-		tempFile->print("Content-Disposition: form-data; name=\"user\"\n");
-		tempFile->print("\n");
-		tempFile->printf("%s\n", _user);
-		tempFile->print("----abcdefg\n");
-		tempFile->print("Content-Disposition: form-data; name=\"token\"\n");
-		tempFile->print("\n");
-		tempFile->printf("%s\n", _token);
-		tempFile->print("----abcdefg\n");
-		tempFile->print("Content-Disposition: form-data; name=\"message\"\n");
-		tempFile->print("\n");
-		tempFile->printf("%s\n", newMessage.message);
-		tempFile->print("----abcdefg\n");
-		tempFile->printf("Content-Disposition: form-data; name=\"attachment\"; filename=\"test.jpg\"\n");
-		tempFile->print("Content-Type: image/jpeg\n");
-		tempFile->print("\n");
-		tempFile->close();
-		
-		while(newMessage.attachment->available()){
-			tempFile->write(newMessage.attachment->read());
+		tempFile = fileSystem->open("/tempfile.temp", FILE_WRITE);
+		if (tempFile)
+		{
+			tempFile.print("----abcdefg\r\n");
+			tempFile.print("Content-Disposition: form-data; name=\"user\"\r\n");
+			tempFile.print("\r\n");
+			tempFile.printf("%s\r\n", _user);
+			tempFile.print("----abcdefg\r\n");
+			tempFile.print("Content-Disposition: form-data; name=\"token\"\r\n");
+			tempFile.print("\r\n");
+			tempFile.printf("%s\r\n", _token);
+			tempFile.print("----abcdefg\r\n");
+			tempFile.print("Content-Disposition: form-data; name=\"message\"\r\n");
+			tempFile.print("\r\n");
+			tempFile.printf("%s\r\n", newMessage.message);
+			tempFile.print("----abcdefg\r\n");
+			tempFile.printf("Content-Disposition: form-data; name=\"attachment\"; filename=\"test.jpg\"\r\n");
+			tempFile.print("Content-Type: image/jpeg\r\n");
+			tempFile.print("\r\n");
+			while (newMessage.attachment->available())
+			{
+				tempFile.write(newMessage.attachment->read());
+			}
+			newMessage.attachment->close();
+			tempFile.print("----abcdefg--\r\n");
+			tempFile.flush();
+			tempFile.close();
+			myClient.addHeader("Content-Type", "multipart/form-data; boundary=--abcdefg");
+			tempFile = fileSystem->open("/tempfile.temp");
+			
+			if (tempFile){
+				responseCode = myClient.sendRequest("POST", &tempFile, tempFile.size());
+				while(myClient.getStream().available()){
+					Serial.write(myClient.getStream().read());
+				}
+			}
 		}
-		tempFile->print("\n");
-		tempFile->print("----abcdefg\n");
-		myClient.addHeader("Content-Type","multipart/form-data; boundary=--abcdefg\n");
-		responseCode = myClient.sendRequest("POST", tempFile, 0);
 	}
 	myClient.end();
 	return responseCode;
