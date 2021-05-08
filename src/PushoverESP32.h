@@ -3,26 +3,29 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
-struct PushoverMessage {
-	char * _token;
-	char * _user=;
-	char * _message=;
-	char * _title=;
-	char * _url=;
-	char * _url_title=;
-	bool _html=;
-	uint8_t _priority=;
-	bool _sound=;
-	uint32_t _timestamp;
+struct PushoverMessage
+{
+
+public:
+	char *message;
+	char *title;
+	char *url;
+	char *url_title;
+	bool html;
+	uint8_t priority;
+	bool sound;
+	uint32_t timestamp;
 };
 
 class Pushover
 {
 private:
 	uint16_t _timeout = 5000;
-	
+	char * token;
+	char * user;
 
 public:
 	Pushover(char *, char *);
+	Pushover();
 	int send(PushoverMessage message);
 };

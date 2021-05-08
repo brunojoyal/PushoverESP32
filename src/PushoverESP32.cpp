@@ -24,10 +24,10 @@ const char *PUSHOVER_ROOT_CA = "-----BEGIN CERTIFICATE-----\n"
 							   "-----END CERTIFICATE-----\n";
 
 
-Pushover::Pushover(char* token, char* user)
+Pushover::Pushover(char* newtoken, char* newuser)
 {
-	_token = token;
-	_user = user;
+	token = newtoken;
+	user = newuser;
 }
 
 
@@ -40,16 +40,16 @@ int Pushover::send(PushoverMessage newMessage)
 	myClient.addHeader("Content-Type", "application/json");
 
 	StaticJsonDocument<512> doc;
-	doc["token"]=newMessage._token;
-	doc["user"]=newMessage._user;
-	doc["message"]=newMessage._message;
-	doc["title"]=newMessage._title;
-	doc["url"]=newMessage._url;
-	doc["url_title"]=newMessage._url_title;
-	doc["html"]=newMessage._html;
-	doc["priority"]=newMessage._priority;
-	doc["sound"]=newMessage._sound;
-	doc["timestamp"]=newMessage._timestamp;
+	doc["token"]=newMessage.token;
+	doc["user"]=newMessage.user;
+	doc["message"]=newMessage.message;
+	doc["title"]=newMessage.title;
+	doc["url"]=newMessage.url;
+	doc["url_title"]=newMessage.url_title;
+	doc["html"]=newMessage.html;
+	doc["priority"]=newMessage.priority;
+	doc["sound"]=newMessage.sound;
+	doc["timestamp"]=newMessage.timestamp;
 
 	char output[512];
 	serializeJson(doc, output);
