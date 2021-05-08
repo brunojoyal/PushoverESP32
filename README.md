@@ -60,6 +60,5 @@ To send an image, simply use the PushoverMessage.attachment property:
 ```
 
 
-```
+
 **Remark**: Due to the absence of native multipart/form-data support in the arduino-esp32 framework, our current implementation relies on the creation of a tempfile (by default in SPIFFS) which contains the HTTP POST multipart request body. Please do let me know if you have a better way.
-```
