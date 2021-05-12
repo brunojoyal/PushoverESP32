@@ -1,9 +1,16 @@
+
+#ifndef PUSHOVER_H_
+#define PUSHOVER_H_
+
 #include <Arduino.h>
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <FS.h>
 #include <SPIFFS.h>
+#include <ESP32upload.h>
+
+
 
 struct PushoverMessage
 {
@@ -26,13 +33,16 @@ private:
 	const char *_token;
 	const char *_user;
 	FS *_tempfileFS = &SPIFFS;
+	Uploader pushoverUploader;
 
 public:
 	Pushover(const char *, const char *);
 	Pushover(const char *, const char *, FS *);
 	Pushover();
-	Pushover(FS * altFS);
-	void setUser(const char*);
-	void setToken(const char*);
+	Pushover(FS *altFS);
+	void setUser(const char *);
+	void setToken(const char *);
 	int send(PushoverMessage message);
 };
+
+#endif

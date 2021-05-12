@@ -20,6 +20,10 @@
       {
         "name": "ArduinoJson",
         "platforms": "espressif32"
+      },
+      {
+        "name": "ESP32upload",
+        "platforms": "espressif32"
       }
     ]
   }
