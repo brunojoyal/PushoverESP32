@@ -1,13 +1,10 @@
 
-#ifndef PUSHOVER_H_
-#define PUSHOVER_H_
+#pragma once
 
-#include <Arduino.h>
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <FS.h>
-#include <SPIFFS.h>
 #include <ESP32upload.h>
 
 
@@ -32,7 +29,7 @@ private:
 	uint16_t _timeout = 5000;
 	const char *_token;
 	const char *_user;
-	FS *_tempfileFS = &SPIFFS;
+	FS *_tempfileFS = NULL;
 	Uploader pushoverUploader;
 
 public:
@@ -44,5 +41,3 @@ public:
 	void setToken(const char *);
 	int send(PushoverMessage message);
 };
-
-#endif

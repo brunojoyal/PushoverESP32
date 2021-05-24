@@ -1,5 +1,6 @@
+#pragma once
 
-
+#include <Arduino.h>
 #include "PushoverESP32.h"
 
 const char *PUSHOVER_ROOT_CA = "-----BEGIN CERTIFICATE-----\n"
