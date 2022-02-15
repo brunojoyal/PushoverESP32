@@ -1,5 +1,3 @@
-#pragma once
-
 #include <Arduino.h>
 #include "PushoverESP32.h"
 
